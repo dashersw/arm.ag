@@ -2,6 +2,7 @@
 title: "Gea Stack"
 tagline: "One TypeScript codebase, compiled ahead of time to native binaries, from microcontrollers to consoles."
 repo: "geastack/compiler"
+stars: "59"
 url: "https://geastack.com"
 year: 2026
 order: 10

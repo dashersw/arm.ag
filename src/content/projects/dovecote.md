@@ -2,6 +2,7 @@
 title: "DoveCôte"
 tagline: "A PaaS solution for running serverless microservices in the cloud"
 repo: "dove-cote/dovecote"
+stars: "21"
 year: 2016
 order: 90
 ---

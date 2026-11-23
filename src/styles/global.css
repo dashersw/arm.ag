@@ -460,8 +460,8 @@ p {
 .pgrid .meta {
   display: flex;
   justify-content: space-between;
-  color: inherit;
-  opacity: 0.7;
+  align-items: center;
+  color: color-mix(in srgb, currentColor 70%, transparent);
 }
 .pgrid h3 {
   margin-top: 1.6rem;
@@ -474,11 +474,21 @@ p {
   opacity: 0.8;
 }
 .stars {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35em;
   font-family: var(--mono);
   white-space: nowrap;
 }
 .stars::before {
-  content: '★ ';
+  content: '★';
+  font-family: system-ui, sans-serif;
+  font-size: 1.5em;
+  line-height: 1;
+  color: var(--amber);
+}
+.pgrid > a:hover .stars::before {
+  color: inherit;
 }
 
 /* ---- ledger: dated rows (articles) ---- */
