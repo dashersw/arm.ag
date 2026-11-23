@@ -47,7 +47,9 @@ async function picture(image: ImageMetadata, w: number, h: number) {
 const clip = (t: string, n: number) => (t.length <= n ? t : t.slice(0, t.lastIndexOf(' ', n)).replace(/[,;:.]$/, '') + '…')
 
 export async function renderOg({ title, label, detail, text, image, round }: OgCard) {
-  const pic = image ? (round ? { w: 380, h: 380 } : { w: 500, h: 312 }) : null
+  // Covers keep their own proportions (they usually carry the talk title), fitted inside a 500x360 box.
+  const fit = image ? Math.min(500 / image.width, 360 / image.height) : 0
+  const pic = image ? (round ? { w: 380, h: 380 } : { w: Math.round(image.width * fit), h: Math.round(image.height * fit) }) : null
   const src = image && pic ? await picture(image, pic.w * 2, pic.h * 2) : null
   const textWidth = pic ? 1200 - 144 - pic.w - 56 : 1200 - 144
   const perLine = textWidth / 34
