@@ -1,5 +1,4 @@
 ---
-import { getImage } from 'astro:assets'
 import { ClientRouter } from 'astro:transitions'
 import '../styles/global.css'
 import f1 from '@fontsource-variable/familjen-grotesk/files/familjen-grotesk-latin-wght-normal.woff2?url'
@@ -13,14 +12,26 @@ interface Props {
   description?: string
   image?: ImageMetadata
   lang?: string
+  type?: 'website' | 'article' | 'profile'
+  published?: Date
 }
 const {
   title,
   description = 'Armağan Amcalar is a software architect, founder of Coyotiv and author of Gea Stack and cote. Talks, articles and open source.',
-  image,
   lang = 'en',
+  type = 'website',
+  published,
 } = Astro.props
-const og = image && (await getImage({ src: image, width: Math.min(1200, image.width), format: 'jpg' })).src
+// Every page has a generated 1200x630 share image at /og/<path>.png (see src/pages/og).
+const slug = Astro.url.pathname.replace(/^\/|\/$/g, '')
+const og = Astro.url.pathname === '/404/' || slug === '404' ? undefined : new URL(`/og/${slug || 'index'}.png`, Astro.site).href
+const me = {
+  '@type': 'Person',
+  name: 'Armağan Amcalar',
+  url: 'https://arm.ag/',
+  jobTitle: 'Software architect',
+  sameAs: ['https://github.com/dashersw', 'https://x.com/dashersw', 'https://www.linkedin.com/in/armaganamcalar', 'https://www.youtube.com/@armaganamcalar'],
+}
 const fullTitle = title ? `${title} · Armağan Amcalar` : 'Armağan Amcalar'
 const canonical = new URL(Astro.url.pathname, Astro.site)
 const nav = [
@@ -35,6 +46,8 @@ const nav = [
 const path = Astro.url.pathname
 // Google Analytics 4 measurement ID of the "arm.ag - GA4" property. PUBLIC_GA_ID overrides it; set it to an empty string to turn analytics off.
 const ga = import.meta.env.PUBLIC_GA_ID ?? 'G-YWNJWJXB3B'
+// Cloudflare Web Analytics site token for arm.ag: cookieless, so it counts every visit without consent.
+const cf = import.meta.env.PUBLIC_CF_BEACON ?? '85cb4b07b2d74fd6988a64962d0f407a'
 ---
 
 <!doctype html>
@@ -52,10 +65,40 @@ const ga = import.meta.env.PUBLIC_GA_ID ?? 'G-YWNJWJXB3B'
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />
-    <meta property="og:type" content="website" />
-    {og && <meta property="og:image" content={new URL(og, Astro.site)} />}
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="Armağan Amcalar" />
+    <meta property="og:locale" content={lang === 'tr' ? 'tr_TR' : 'en_GB'} />
+    {published && <meta property="article:published_time" content={published.toISOString()} />}
+    {type === 'article' && <meta property="article:author" content="Armağan Amcalar" />}
+    {
+      og && (
+        <>
+          <meta property="og:image" content={og} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content={fullTitle} />
+          <meta name="twitter:image" content={og} />
+        </>
+      )
+    }
     <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:site" content="@dashersw" />
     <meta name="twitter:creator" content="@dashersw" />
+    <meta name="twitter:title" content={fullTitle} />
+    <meta name="twitter:description" content={description} />
+    <meta name="author" content="Armağan Amcalar" />
+    <script
+      is:inline
+      type="application/ld+json"
+      set:html={JSON.stringify({
+        '@context': 'https://schema.org',
+        ...(type === 'article'
+          ? { '@type': 'Article', headline: title, description, url: canonical.href, image: og, inLanguage: lang, datePublished: published?.toISOString(), author: me }
+          : slug === '' || slug === 'about'
+            ? { ...me, '@type': 'Person', description, image: og }
+            : { '@type': 'WebPage', name: fullTitle, description, url: canonical.href, inLanguage: lang, author: me }),
+      })}
+    />
     {
       ga && (
         <script is:inline define:vars={{ ga }}>
@@ -127,6 +170,7 @@ const ga = import.meta.env.PUBLIC_GA_ID ?? 'G-YWNJWJXB3B'
         </div>
       )
     }
+    {cf && <script is:inline defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon={JSON.stringify({ token: cf, spa: true })} />}
     <script>
       import '../scripts/strings.ts'
       import '../scripts/consent.ts'

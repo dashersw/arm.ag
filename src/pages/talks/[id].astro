@@ -21,7 +21,7 @@ const same = talks.filter(o => o.id !== talk.id && o.data.title.split(':')[0].tr
 const description = (talk.body ?? '').split('\n').find(l => l && !l.startsWith('<') && !l.startsWith('#'))?.replace(/[*_\\[\]]|\(\/?[^)]*\)/g, '').slice(0, 200)
 ---
 
-<Base title={`${t.title} · ${t.event}`} description={description} image={t.cover} lang={t.lang}>
+<Base title={`${t.title} · ${t.event}`} description={description} lang={t.lang} type="article" published={t.date}>
   <article>
     <header class="post-head narrow">
       <span class="meta">

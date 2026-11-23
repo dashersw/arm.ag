@@ -18,7 +18,7 @@ const articles = (await allArticles()).filter(a => a.data.lang === 'en').slice(0
 const projects = (await allProjects()).slice(0, 6)
 ---
 
-<Base image={portrait}>
+<Base type="profile">
   <section class="hero wrap">
     <h1>I design software systems, build the tools they need, and <em class="hl">teach people the craft</em>.</h1>
     <div class="cols2">

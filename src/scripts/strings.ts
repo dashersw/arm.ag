@@ -26,7 +26,8 @@ function soundOn() {
 }
 
 function play(i: number, gain: number) {
-  if (!ctx || !soundOn()) return
+  // A suspended context queues sources and plays them all at once when it resumes, so drop notes until it runs.
+  if (!ctx || !soundOn() || ctx.state !== 'running') return
   const f = NOTES[i % 6]
   let buf = buffers.get(i % 6)
   if (!buf) {

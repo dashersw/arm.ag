@@ -16,7 +16,7 @@ const { Content } = await render(project)
 const talks = p.repo ? (await allTalks()).filter(t => t.data.code?.some(c => c.toLowerCase().endsWith('/' + p.repo!.toLowerCase()))) : []
 ---
 
-<Base title={p.title} description={p.tagline} image={p.cover}>
+<Base title={p.title} description={p.tagline}>
   <article>
     <header class="post-head narrow">
       <span class="meta"><a href="/projects/">Project</a> · since {p.year}{p.stars && ` · ${p.stars} GitHub stars`}</span>

@@ -19,7 +19,7 @@ const a = article.data
 const { Content } = await render(article)
 ---
 
-<Base title={a.title} description={a.description} image={a.cover} lang={a.lang}>
+<Base title={a.title} description={a.description} lang={a.lang} type="article" published={a.date}>
   <article>
     <header class="post-head narrow">
       <span class="meta"><a href="/articles/">Article</a> · <time datetime={isoDate(a.date)}>{fmtDate(a.date)}</time></span>
