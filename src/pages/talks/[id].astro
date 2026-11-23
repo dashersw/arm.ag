@@ -1,0 +1,69 @@
+---
+import { Image } from 'astro:assets'
+import { render } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import { allTalks, fmtDate, isoDate, kindLabel, type Talk } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const talks = await allTalks()
+  return talks.map((talk, i) => ({ params: { id: talk.id }, props: { talk, newer: talks[i - 1], older: talks[i + 1], talks } }))
+}
+interface Props {
+  talk: Talk
+  newer?: Talk
+  older?: Talk
+  talks: Talk[]
+}
+const { talk, newer, older, talks } = Astro.props
+const t = talk.data
+const { Content } = await render(talk)
+const same = talks.filter(o => o.id !== talk.id && o.data.title.split(':')[0].trim() === t.title.split(':')[0].trim())
+const description = (talk.body ?? '').split('\n').find(l => l && !l.startsWith('<') && !l.startsWith('#'))?.replace(/[*_\\[\]]|\(\/?[^)]*\)/g, '').slice(0, 200)
+---
+
+<Base title={`${t.title} · ${t.event}`} description={description} image={t.cover} lang={t.lang}>
+  <article>
+    <header class="post-head narrow">
+      <span class="meta">
+        <a href="/talks/">{kindLabel[t.kind]}</a> · <time datetime={isoDate(t.date)}>{fmtDate(t.date)}</time>
+      </span>
+      <h1>{t.title}</h1>
+      <p class="sub">{t.event}</p>
+    </header>
+    {
+      /* Title cards from the original site are full-size; video stills and deck thumbnails are only used in listings. */
+      t.cover && t.cover.width > 1500 && (
+        <div class="post-cover">
+          <Image src={t.cover} alt="" width={1920} loading="eager" />
+        </div>
+      )
+    }
+    <div class="prose narrow">
+      <Content />
+    </div>
+    <footer class="post-foot narrow">
+      {
+        same.length > 0 && (
+          <>
+            <h2>Other editions of this talk</h2>
+            <ul class="ledger">
+              {same.map(o => (
+                <li>
+                  <span class="meta">{fmtDate(o.data.date)}</span>
+                  <a class="t" href={`/talks/${o.id}/`}>
+                    {o.data.event}
+                  </a>
+                  <span class="where">{[o.data.video && 'Video', o.data.slides && 'Slides'].filter(Boolean).join(' · ')}</span>
+                </li>
+              ))}
+            </ul>
+          </>
+        )
+      }
+      <nav class="pager" aria-label="More talks">
+        {older ? <a href={`/talks/${older.id}/`}><span class="meta">Earlier</span>{older.data.title}</a> : <span />}
+        {newer ? <a href={`/talks/${newer.id}/`} style="text-align:right"><span class="meta">Later</span>{newer.data.title}</a> : <span />}
+      </nav>
+    </footer>
+  </article>
+</Base>

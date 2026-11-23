@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro'
+
+const work = [
+  ['OpenServ', 'https://coyotiv.com/work/openserv/', 'Fractional CTO, AI architecture and platform engineering. We built the agent API and marketplace and the engineering team behind them.'],
+  ['Turkish Airlines', 'https://coyotiv.com/work/turkish-airlines/', 'Architecture workshops, Vue.js training and code review practices, so the in-house team could own the rebuild of a large web application.'],
+  ['Neol', 'https://coyotiv.com/work/', 'From an early venture to an AI platform with its own in-house engineering team.'],
+  ['Klareda', 'https://coyotiv.com/work/', 'An AI hiring product that takes a company from defining a role to candidates in its network.'],
+  ['TheFreshener', 'https://coyotiv.com/work/', 'Took over a difficult operations application, brought it to production and kept developing it.'],
+  ['Beko Garage', 'https://coyotiv.com/work/', 'Turning AI product ideas into working prototypes.'],
+  ['OMMA', 'https://coyotiv.com/work/', 'Prototypes for interactive video.'],
+]
+const products = [
+  ['Gea Stack', '/projects/geastack/', 'Build across platforms with TypeScript: a framework and toolchain for web, native and embedded.'],
+  ['Raison', 'https://raison.ist/', 'A prompt workspace for teams, with evaluations, versioning and release or rollback without a deploy.'],
+  ['Taiga', 'https://asktaiga.ai/', 'A coding mentor that lives in Slack. It started as the teaching assistant in our own school.'],
+  ['Taurus', 'https://playtaurus.com/', 'A pedalboard for your Audio Unit plug-ins.'],
+  ['Spring Affair', 'https://apps.apple.com/app/spring-affair/id6815591467', 'Spring reverb for guitar on iPhone, iPad and Mac.'],
+  ['Casey', 'https://hirecasey.ai/', 'A note taker small enough to wear.'],
+  ['Unpile', 'https://unpileapp.com/', 'Inbox Zero for the ADHD mind: a Mac app for Gmail.'],
+  ['Dream Kid', 'https://dreamkid.ai/', 'Stories made for your child.'],
+  ['Minikampus', 'https://www.minikampus.com/', 'More ways to work through what you are learning.'],
+  ['Kurtuluş 1919', 'https://kurtulus1919.com/', 'A strategy game set in the Turkish War of Independence.'],
+]
+---
+
+<Base title="Coyotiv" description="Coyotiv is the Berlin software company and engineering school founded by Armağan Amcalar: product and AI engineering, fractional CTO work, and a 14-week school.">
+  <div class="wrap">
+    <header class="page-head">
+      <span class="meta">Founded April 2020 · Berlin</span>
+      <h1>Coyotiv</h1>
+      <p class="lede">
+        Coyotiv is the company I founded after leaving Wayfair: a software company with an engineering school attached. We build software for clients, ship
+        products of our own, and teach people to do both.
+      </p>
+      <div class="actions">
+        <a class="btn primary" href="https://coyotiv.com">coyotiv.com</a>
+        <a class="btn" href="https://coyotiv.com/school/">The school</a>
+        <a class="btn" href="mailto:hello@coyotiv.com">hello@coyotiv.com</a>
+      </div>
+    </header>
+
+    <section class="section">
+      <div class="narrow prose" style="margin-inline:0">
+        <p>
+          I left my job to gather people who shared an obsession with how software gets built. The name comes from Wile E. Coyote, who keeps going after the
+          goal no matter how the last attempt ended.
+        </p>
+        <p>
+          We started with the school. One-to-one mentoring worked, but it didn't scale, so I designed a full program and taught it myself. The best graduates
+          stayed, clients started asking for the people who taught the course, and the client work grew out of that. Today we are about twenty people across
+          Germany and Türkiye, and some of us have worked together for more than a decade.
+        </p>
+        <blockquote class="pull">With great software comes great responsibility.</blockquote>
+        <p>
+          That line is on our front page, and it describes how we work: understand the problem before writing code, keep decisions close to the people doing
+          the work, keep the work open to review, and leave the knowledge with the client's team when we go.
+        </p>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>What we do</h2></div>
+      <div class="cols">
+        <div>
+          <h3>Product engineering</h3>
+          <p>From idea to prototype to production: discovery, interface design, web applications, APIs and cloud delivery.</p>
+        </div>
+        <div>
+          <h3>AI engineering</h3>
+          <p>Agent workflows connected to real business data and tools, with retrieval, evaluation and execution you can audit.</p>
+        </div>
+        <div>
+          <h3>Mobile, native and embedded</h3>
+          <p>iOS and Android apps, desktop software, device integrations and firmware.</p>
+        </div>
+        <div>
+          <h3>Takeover and modernisation</h3>
+          <p>Code and architecture review, refactoring, migrations and maintenance for applications someone else started.</p>
+        </div>
+        <div>
+          <h3>Fractional CTO</h3>
+          <p>Technical leadership for companies that need a CTO's judgment but not yet a full-time one. This is the part I do personally.</p>
+        </div>
+        <div>
+          <h3>Training</h3>
+          <p>Workshops and long-running coaching for engineering teams, on architecture, code review and working with AI.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Selected work</h2>
+        <a href="https://coyotiv.com/work/">All case studies</a>
+      </div>
+      <ul class="ledger">
+        {
+          work.map(([name, href, text]) => (
+            <li>
+              <span class="meta">Client</span>
+              <a class="t" href={href}>
+                {name}
+              </a>
+              <span />
+              <p>{text}</p>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="meta" style="margin-top:1.5rem;text-transform:none">
+        Also: AI workflows for government projects in Dubai, a hotel booking platform, a healthcare platform connecting software, devices and data, and AI
+        coaching for managers.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Our own products</h2>
+        <a href="https://coyotiv.com/products/">All products</a>
+      </div>
+      <ul class="ledger">
+        {
+          products.map(([name, href, text]) => (
+            <li>
+              <span class="meta">Product</span>
+              <a class="t" href={href}>
+                {name}
+              </a>
+              <span />
+              <p>{text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Coyotiv School of Software Engineering</h2>
+        <a href="https://coyotiv.com/school/">Programs and dates</a>
+      </div>
+      <div class="narrow prose" style="margin-inline:0">
+        <p>
+          A 14-week, full-time, live online program in English, for people with no prior experience. Cohorts have at most fifteen students. Everyone builds one
+          real product from the first week and presents it to hiring partners on demo day.
+        </p>
+        <p>I designed the curriculum and I'm the lead instructor. Mornings are lectures; afternoons are your own project, with us next to you.</p>
+      </div>
+      <dl class="facts" style="margin-top:2rem">
+        <dt>Weeks 1–2</dt>
+        <dd><strong>JavaScript</strong><span>The language, properly, before any framework.</span></dd>
+        <dt>Weeks 3–4</dt>
+        <dd><strong>Node and APIs</strong><span>Express and REST.</span></dd>
+        <dt>Weeks 5–6</dt>
+        <dd><strong>Databases</strong><span>Modelling data with MongoDB.</span></dd>
+        <dt>Weeks 7–8</dt>
+        <dd><strong>Authentication and testing</strong><span>The parts tutorials skip.</span></dd>
+        <dt>Weeks 9–10</dt>
+        <dd><strong>Front end</strong><span>React.</span></dd>
+        <dt>Weeks 11–12</dt>
+        <dd><strong>Production</strong><span>Docker, CI, cloud and monitoring.</span></dd>
+        <dt>Weeks 13–14</dt>
+        <dd><strong>Demo day</strong><span>Finish, present and interview.</span></dd>
+      </dl>
+      <p class="meta" style="margin-top:1rem;text-transform:none">
+        There is also a self-paced track with recorded lectures and weekly live Q&amp;A, a Turkish-language track, and corporate training. In Germany the
+        full-time program can be funded with a Bildungsgutschein.
+      </p>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Research and press</h2></div>
+      <ul class="ledger">
+        <li>
+          <span class="meta">Apr 2026</span>
+          <a class="t" href="https://uk.entrepreneur.com/technology/coyotiv-and-openserv-are-working-to-cut-ai-reasoning-costs/503898"
+            >Coyotiv and OpenServ Are Working to Cut AI Reasoning Costs</a
+          >
+          <span class="where">Entrepreneur UK</span>
+        </li>
+        <li>
+          <span class="meta">Dec 2025</span>
+          <a class="t" href="https://arxiv.org/abs/2512.15959">BRAID: bounded reasoning for AI agents</a>
+          <span class="where">arXiv</span>
+        </li>
+        <li>
+          <span class="meta">May 2023</span>
+          <a class="t" href="/talks/2023-05-09-the-future-of-learning-software-engineering-with-kyle-simpson/"
+            >The Future of Learning Software Engineering, with Kyle Simpson</a
+          >
+          <span class="where">Coyotiv webinar</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>

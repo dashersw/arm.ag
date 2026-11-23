@@ -1,0 +1,30 @@
+---
+import { Image } from 'astro:assets'
+import { fmtDate, kindLabel, type Talk } from '../lib/site'
+
+interface Props {
+  talk: Talk
+  big?: boolean
+}
+const { talk, big } = Astro.props
+const t = talk.data
+---
+
+<a class="card" href={`/talks/${talk.id}/`} lang={t.lang}>
+  {
+    t.cover ? (
+      <div class="thumb">
+        <Image src={t.cover} alt="" width={big ? 1280 : 640} height={big ? 800 : 400} fit="cover" loading="lazy" />
+        {t.video && <span class="play">Video</span>}
+      </div>
+    ) : (
+      <div class="thumb type">{t.title}</div>
+    )
+  }
+  <h3>
+    {t.title}
+    {t.kind !== 'talk' && <span class="tag">{kindLabel[t.kind]}</span>}
+    {t.lang === 'tr' && <span class="tag">TR</span>}
+  </h3>
+  <span class="meta">{t.event} · {fmtDate(t.date)}</span>
+</a>

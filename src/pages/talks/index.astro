@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro'
+import TalkCard from '../../components/TalkCard.astro'
+import { allTalks } from '../../lib/site'
+
+const talks = await allTalks()
+const years = [...new Set(talks.map(t => t.data.date.getUTCFullYear()))]
+const onStage = talks.filter(t => t.data.kind === 'talk').length
+const recorded = talks.filter(t => t.data.video).length
+---
+
+<Base title="Talks" description="Every conference talk, workshop and interview by Armağan Amcalar since 2013, with slides and video.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Talks</h1>
+      <p class="lede">
+        I've been speaking at conferences and meetups since {years.at(-1)}, mostly about distributed systems, JavaScript, engineering teams and, lately, AI
+        reasoning. This is the full record: {onStage} talks plus workshops, interviews and podcasts, {recorded} of them on video.
+      </p>
+      <div class="actions">
+        <a class="btn" href="https://www.youtube.com/playlist?list=PL9pDl_Oth4cqFEFDbKPU89-3DBv33VEun">Watch the playlist</a>
+        <a class="btn" href="https://sessionize.com/armagan-amcalar/">Speaker profile</a>
+        <a class="btn" href="/contact/?topic=speaking">Invite me to speak</a>
+      </div>
+    </header>
+    {
+      years.map(y => (
+        <section class="year" id={String(y)}>
+          <h2>{y}</h2>
+          <div class="cards">
+            {talks.filter(t => t.data.date.getUTCFullYear() === y).map(talk => <TalkCard talk={talk} />)}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</Base>

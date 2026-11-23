@@ -1,0 +1,32 @@
+---
+import Base from '../../layouts/Base.astro'
+import { allArticles, fmtDate } from '../../lib/site'
+
+const articles = await allArticles()
+---
+
+<Base title="Articles" description="Essays by Armağan Amcalar on software craftsmanship, microservices, architecture and engineering careers.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Articles</h1>
+      <p class="lede">Longer pieces on software craftsmanship, architecture, microservices and building a career in engineering.</p>
+    </header>
+    <section class="section">
+      <ul class="ledger">
+        {
+          articles.map(a => (
+            <li lang={a.data.lang}>
+              <span class="meta">{fmtDate(a.data.date)}</span>
+              <a class="t" href={`/articles/${a.id}/`}>
+                {a.data.title}
+                {a.data.lang === 'tr' && <span class="tag">TR</span>}
+              </a>
+              <span />
+              {a.data.description && <p>{a.data.description}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+</Base>

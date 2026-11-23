@@ -1,0 +1,152 @@
+---
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import TalkCard from '../components/TalkCard.astro'
+import portrait from '../assets/portrait.png'
+import { allArticles, allProjects, allTalks, fmtDate } from '../lib/site'
+
+const talks = await allTalks()
+const lead = talks.find(t => t.id.startsWith('2026-09-15-meet-gea'))!
+const recent = [lead, ...talks.filter(t => t.data.cover && t.data.kind === 'talk' && t.data.lang === 'en' && t !== lead).slice(0, 2)]
+const pick = (id: string) => talks.find(t => t.id === id)!
+const known = [
+  '2018-03-02-code-play-rock-n-roll-a-webaudio-experiment',
+  '2018-06-01-console-log-brain',
+  '2018-04-13-the-human-side-of-microservices',
+].map(pick)
+const articles = (await allArticles()).filter(a => a.data.lang === 'en').slice(0, 5)
+const projects = (await allProjects()).slice(0, 6)
+---
+
+<Base image={portrait}>
+  <section class="hero wrap">
+    <h1>I design software systems, build the tools they need, and <em class="hl">teach people the craft</em>.</h1>
+    <div class="cols2">
+      <div>
+        <p class="intro">
+          I'm Armağan, a software architect and founder based in Berlin. I run <a href="/coyotiv/">Coyotiv</a>, a software company and engineering school, and
+          I'm the CTO of <a href="https://openserv.ai">OpenServ</a> and <a href="https://neol.co">Neol</a>.
+        </p>
+        <p class="intro">
+          I started as an electronics engineer doing brain research, and have been writing software professionally since 2002. Since then I've led
+          engineering at startups and at scale, written open source that runs in production, and given {talks.filter(t => t.data.kind === 'talk').length} talks
+          along the way.
+        </p>
+        <span class="meta hint">The lines on this site are guitar strings. Run your cursor across one.</span>
+      </div>
+      <figure>
+        <Image src={portrait} alt="Armağan Amcalar wearing an EEG headset" width={720} loading="eager" />
+        <figcaption class="meta">Wearing the EEG headset from <a href="/projects/brain-bits/">brain-bits</a></figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <section class="section">
+      <div class="section-head"><h2>What I'm working on</h2></div>
+      <div class="now">
+        <div>
+          <span class="meta">Open source</span>
+          <h3><a href="/projects/geastack/">Gea Stack</a></h3>
+          <p>
+            A compiler that turns one TypeScript, JSX and CSS codebase into native binaries for microcontrollers, phones, desktops and consoles. No browser and
+            no JavaScript engine on the device.
+          </p>
+        </div>
+        <div>
+          <span class="meta">Company</span>
+          <h3><a href="/coyotiv/">Coyotiv</a></h3>
+          <p>
+            A Berlin software company with an engineering school attached. We build products for clients, ship our own, and train the engineers who go on to do
+            both.
+          </p>
+        </div>
+        <div>
+          <span class="meta">Research</span>
+          <h3><a href="https://arxiv.org/abs/2512.15959">BRAID</a></h3>
+          <p>
+            Bounded reasoning for AI agents, published with OpenServ Labs. Giving a model a structured reasoning path makes it more accurate and far cheaper to
+            run.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Recent talks</h2>
+        <a href="/talks/">All {talks.length} talks and interviews</a>
+      </div>
+      <div class="cards feature">{recent.map((talk, i) => <TalkCard talk={talk} big={i === 0} />)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head"><h2>Talks people still ask about</h2></div>
+      <div class="cards">{known.map(talk => <TalkCard talk={talk} />)}</div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Open source</h2>
+        <a href="/projects/">All projects</a>
+      </div>
+      <div class="pgrid">
+        {
+          projects.map(p => (
+            <a href={`/projects/${p.id}/`}>
+              <span class="meta">
+                Since {p.data.year}
+                {p.data.stars && <span class="stars">{p.data.stars}</span>}
+              </span>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.tagline}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2>Writing</h2>
+        <a href="/articles/">All articles</a>
+      </div>
+      <ul class="ledger">
+        {
+          articles.map(a => (
+            <li>
+              <span class="meta">{fmtDate(a.data.date)}</span>
+              <a class="t" href={`/articles/${a.id}/`}>
+                {a.data.title}
+              </a>
+              {a.data.description && <p>{a.data.description}</p>}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+  </div>
+
+  <section class="band">
+    <div class="wrap">
+      <h2>Work with me</h2>
+      <div class="cols">
+        <div>
+          <h3>Mentoring</h3>
+          <p>One-to-one mentoring for engineers, engineering managers and founders, as ongoing sessions or a single call.</p>
+          <p><a href="/mentoring/">How mentoring works</a></p>
+        </div>
+        <div>
+          <h3>Fractional CTO and consulting</h3>
+          <p>Technical leadership, architecture reviews and AI engineering for startups and enterprises, through Coyotiv.</p>
+          <p><a href="/coyotiv/">What Coyotiv does</a></p>
+        </div>
+        <div>
+          <h3>Speaking</h3>
+          <p>Keynotes, conference talks and workshops in English or Turkish.</p>
+          <p><a href="/contact/?topic=speaking">Invite me to speak</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>

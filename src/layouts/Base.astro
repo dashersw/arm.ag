@@ -1,0 +1,135 @@
+---
+import { getImage } from 'astro:assets'
+import { ClientRouter } from 'astro:transitions'
+import '../styles/global.css'
+import f1 from '@fontsource-variable/familjen-grotesk/files/familjen-grotesk-latin-wght-normal.woff2?url'
+import f2 from '@fontsource-variable/familjen-grotesk/files/familjen-grotesk-latin-ext-wght-normal.woff2?url'
+import f3 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-wght-normal.woff2?url'
+import f4 from '@fontsource-variable/source-serif-4/files/source-serif-4-latin-ext-wght-normal.woff2?url'
+import f5 from '@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2?url'
+
+interface Props {
+  title?: string
+  description?: string
+  image?: ImageMetadata
+  lang?: string
+}
+const {
+  title,
+  description = 'Armağan Amcalar is a software architect, founder of Coyotiv and author of Gea Stack and cote. Talks, articles and open source.',
+  image,
+  lang = 'en',
+} = Astro.props
+const og = image && (await getImage({ src: image, width: Math.min(1200, image.width), format: 'jpg' })).src
+const fullTitle = title ? `${title} · Armağan Amcalar` : 'Armağan Amcalar'
+const canonical = new URL(Astro.url.pathname, Astro.site)
+const nav = [
+  ['/about/', 'About'],
+  ['/talks/', 'Talks'],
+  ['/articles/', 'Articles'],
+  ['/projects/', 'Projects'],
+  ['/coyotiv/', 'Coyotiv'],
+  ['/mentoring/', 'Mentoring'],
+  ['/contact/', 'Contact'],
+]
+const path = Astro.url.pathname
+// Google Analytics 4 measurement ID of the "arm.ag - GA4" property. PUBLIC_GA_ID overrides it; set it to an empty string to turn analytics off.
+const ga = import.meta.env.PUBLIC_GA_ID ?? 'G-YWNJWJXB3B'
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    {[f1, f2, f3, f4, f5].map(f => <link rel="preload" as="font" type="font/woff2" href={f} crossorigin />)}
+    <ClientRouter />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="application/rss+xml" title="Armağan Amcalar" href="/feed.xml" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:type" content="website" />
+    {og && <meta property="og:image" content={new URL(og, Astro.site)} />}
+    <meta name="twitter:card" content={og ? 'summary_large_image' : 'summary'} />
+    <meta name="twitter:creator" content="@dashersw" />
+    {
+      ga && (
+        <script is:inline define:vars={{ ga }}>
+          // Google Analytics loads only after the visitor agrees; the choice is kept in localStorage.
+          window.dataLayer = window.dataLayer || []
+          function gtag() {
+            dataLayer.push(arguments)
+          }
+          window.gtag = gtag
+          const agreed = () => {
+            try {
+              return localStorage.getItem('analytics') === 'yes'
+            } catch {
+              return false
+            }
+          }
+          window.startAnalytics = () => {
+            if (window.gaLoaded || !agreed()) return
+            window.gaLoaded = true
+            const s = document.createElement('script')
+            s.async = true
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + ga
+            document.head.append(s)
+            gtag('js', new Date())
+            gtag('config', ga, { send_page_view: false })
+          }
+          document.addEventListener('astro:page-load', () => {
+            window.startAnalytics()
+            if (window.gaLoaded) gtag('event', 'page_view', { page_location: location.href, page_title: document.title })
+          })
+        </script>
+      )
+    }
+  </head>
+  <body>
+    <header class="site-head wrap">
+      <a class="name" href="/">Armağan Amcalar</a>
+      <nav aria-label="Main">
+        {nav.map(([href, label]) => <a href={href} aria-current={path.startsWith(href) ? 'page' : undefined}>{label}</a>)}
+      </nav>
+    </header>
+    <main>
+      <slot />
+    </main>
+    <footer class="site-foot wrap">
+      <div class="row">
+        <span>Armağan Amcalar · Berlin · <a href="/contact/">Get in touch</a></span>
+        <ul>
+          <li><a href="https://github.com/dashersw">GitHub</a></li>
+          <li><a href="https://x.com/dashersw">X</a></li>
+          <li><a href="https://www.linkedin.com/in/armaganamcalar">LinkedIn</a></li>
+          <li><a href="https://www.youtube.com/@armaganamcalar">YouTube</a></li>
+          <li><a href="/academics/">Academics</a></li>
+          <li><a href="/turkce/">Türkçe</a></li>
+          <li><a href="/feed.xml">RSS</a></li>
+          {ga && <li><button class="cookies" type="button">Cookies</button></li>}
+          <li><button class="sound" type="button" aria-pressed="false">Sound off</button></li>
+        </ul>
+      </div>
+    </footer>
+    {
+      ga && (
+        <div class="consent" role="region" aria-label="Analytics consent" hidden>
+          <p>I use Google Analytics to count visits. It sets cookies only if you agree.</p>
+          <div>
+            <button type="button" data-consent="yes">Allow</button>
+            <button type="button" data-consent="no">No thanks</button>
+          </div>
+        </div>
+      )
+    }
+    <script>
+      import '../scripts/strings.ts'
+      import '../scripts/consent.ts'
+    </script>
+  </body>
+</html>

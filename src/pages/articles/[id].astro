@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets'
+import { render, type CollectionEntry } from 'astro:content'
+import Base from '../../layouts/Base.astro'
+import { allArticles, fmtDate, isoDate } from '../../lib/site'
+
+export async function getStaticPaths() {
+  const articles = await allArticles()
+  return articles.map((article, i) => ({ params: { id: article.id }, props: { article, newer: articles[i - 1], older: articles[i + 1] } }))
+}
+type A = CollectionEntry<'articles'>
+interface Props {
+  article: A
+  newer?: A
+  older?: A
+}
+const { article, newer, older } = Astro.props
+const a = article.data
+const { Content } = await render(article)
+---
+
+<Base title={a.title} description={a.description} image={a.cover} lang={a.lang}>
+  <article>
+    <header class="post-head narrow">
+      <span class="meta"><a href="/articles/">Article</a> · <time datetime={isoDate(a.date)}>{fmtDate(a.date)}</time></span>
+      <h1>{a.title}</h1>
+      {a.description && <p class="sub">{a.description}</p>}
+    </header>
+    {
+      a.cover && (
+        <div class="post-cover">
+          <Image src={a.cover} alt="" width={1920} loading="eager" />
+        </div>
+      )
+    }
+    <div class="prose narrow">
+      <Content />
+    </div>
+    <footer class="post-foot narrow">
+      <nav class="pager" aria-label="More articles">
+        {older ? <a href={`/articles/${older.id}/`}><span class="meta">Earlier</span>{older.data.title}</a> : <span />}
+        {newer ? <a href={`/articles/${newer.id}/`} style="text-align:right"><span class="meta">Later</span>{newer.data.title}</a> : <span />}
+      </nav>
+    </footer>
+  </article>
+</Base>

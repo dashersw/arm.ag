@@ -1,0 +1,46 @@
+---
+import Base from '../layouts/Base.astro'
+import TalkCard from '../components/TalkCard.astro'
+import { allArticles, allTalks, fmtDate } from '../lib/site'
+
+const talks = (await allTalks()).filter(t => t.data.lang === 'tr')
+const articles = (await allArticles()).filter(a => a.data.lang === 'tr')
+---
+
+<Base title="Türkçe" description="Armağan Amcalar'ın Türkçe konuşmaları, söyleşileri ve yazıları." lang="tr">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Türkçe</h1>
+      <p class="lede">
+        Türkçe yaptığım konuşmalar, katıldığım söyleşiler ve yazdığım yazılar. Yapay zekâ ve yazılım üzerine haftalık canlı yayınlarım{' '}
+        <a href="https://www.youtube.com/@armaganamcalar">YouTube kanalımda</a>.
+      </p>
+    </header>
+    <section class="section">
+      <div class="section-head"><h2>Konuşmalar ve söyleşiler</h2></div>
+      <div class="cards">{talks.map(talk => <TalkCard talk={talk} />)}</div>
+    </section>
+    <section class="section">
+      <div class="section-head"><h2>Yazılar</h2></div>
+      <ul class="ledger">
+        {
+          articles.map(a => (
+            <li>
+              <span class="meta">{fmtDate(a.data.date, 'tr')}</span>
+              <a class="t" href={`/articles/${a.id}/`}>
+                {a.data.title}
+              </a>
+              <span />
+              {a.data.description && <p>{a.data.description}</p>}
+            </li>
+          ))
+        }
+        <li>
+          <span class="meta">7 Şub 2014</span>
+          <a class="t" href="https://webrazzi.com/2014/02/07/node-js-ile-ciddi-dusunmek/">Node.js ile “ciddi” düşünmek</a>
+          <span class="where">Webrazzi</span>
+        </li>
+      </ul>
+    </section>
+  </div>
+</Base>

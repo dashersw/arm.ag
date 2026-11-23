@@ -1,0 +1,104 @@
+---
+import Base from '../layouts/Base.astro'
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT ?? ''
+const topics = [
+  ['speaking', 'Speaking invitation'],
+  ['mentoring', 'Mentoring'],
+  ['consulting', 'Fractional CTO or consulting'],
+  ['other', 'Something else'],
+]
+---
+
+<Base title="Contact" description="Get in touch with Armağan Amcalar about speaking, mentoring, consulting or anything else.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Contact</h1>
+      <p class="lede">Speaking invitations, mentoring, consulting, or a question about something I built. I read everything and answer most of it.</p>
+    </header>
+
+    <section class="section contact">
+      <form class="form" data-endpoint={endpoint}>
+        <label>
+          <span>Your name</span>
+          <input name="name" type="text" autocomplete="name" required />
+        </label>
+        <label>
+          <span>Your email</span>
+          <input name="email" type="email" autocomplete="email" required />
+        </label>
+        <label>
+          <span>What is it about?</span>
+          <select name="topic">
+            {topics.map(([v, l]) => <option value={v}>{l}</option>)}
+          </select>
+        </label>
+        <label>
+          <span>Message</span>
+          <textarea name="message" rows="7" required></textarea>
+        </label>
+        <div class="actions">
+          <button class="btn primary" type="submit">{endpoint ? 'Send message' : 'Write this email'}</button>
+        </div>
+        <p class="status" role="status" aria-live="polite">
+          {!endpoint && 'This opens your mail app with the message filled in.'}
+        </p>
+      </form>
+
+      <aside>
+        <h2>Or directly</h2>
+        <dl class="facts">
+          <dt>Email</dt>
+          <dd><a href="mailto:hello@arm.ag">hello@arm.ag</a></dd>
+          <dt>Coyotiv</dt>
+          <dd><a href="mailto:hello@coyotiv.com">hello@coyotiv.com</a><span> for client work and the school</span></dd>
+          <dt>Mentoring</dt>
+          <dd><a href="https://mentorcruise.com/mentor/armaganamcalar/">Book on MentorCruise</a></dd>
+          <dt>Elsewhere</dt>
+          <dd>
+            <a href="https://x.com/dashersw">X</a>, <a href="https://www.linkedin.com/in/armaganamcalar">LinkedIn</a>,{' '}
+            <a href="https://github.com/dashersw">GitHub</a>
+          </dd>
+        </dl>
+      </aside>
+    </section>
+  </div>
+</Base>
+
+<script>
+  document.addEventListener('astro:page-load', () => {
+    const form = document.querySelector<HTMLFormElement>('form.form')
+    if (!form) return
+    const status = form.querySelector<HTMLElement>('.status')!
+    const topic = new URLSearchParams(location.search).get('topic')
+    const select = form.elements.namedItem('topic') as HTMLSelectElement
+    if (topic && [...select.options].some(o => o.value === topic)) select.value = topic
+
+    form.addEventListener('submit', async e => {
+      e.preventDefault()
+      const data = Object.fromEntries(new FormData(form)) as Record<string, string>
+      const subject = select.selectedOptions[0].text
+      const endpoint = form.dataset.endpoint
+      if (!endpoint) {
+        const body = `${data.message}\n\n${data.name}\n${data.email}`
+        location.href = `mailto:hello@arm.ag?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`
+        return
+      }
+      const button = form.querySelector('button')!
+      button.disabled = true
+      status.textContent = 'Sending…'
+      try {
+        const r = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'content-type': 'application/json', accept: 'application/json' },
+          body: JSON.stringify({ ...data, subject }),
+        })
+        if (!r.ok) throw new Error(String(r.status))
+        form.reset()
+        status.textContent = 'Message sent. I will reply by email.'
+      } catch {
+        status.textContent = 'The message was not sent. Try again, or write to hello@arm.ag.'
+      }
+      button.disabled = false
+    })
+  })
+</script>

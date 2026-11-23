@@ -1,0 +1,24 @@
+---
+import { getEntry, render } from 'astro:content'
+import Base from '../layouts/Base.astro'
+
+const page = (await getEntry('pages', 'academics'))!
+const { Content } = await render(page)
+---
+
+<Base title="Academic work" description="Armağan Amcalar's research on P300-based brain-computer interfaces at Sabancı University, and later publications.">
+  <article>
+    <header class="post-head narrow">
+      <span class="meta">Research · Sabancı University, 2007–2010</span>
+      <h1>{page.data.title}</h1>
+    </header>
+    <div class="prose narrow">
+      <Content />
+      <h2>Later research</h2>
+      <p>
+        Fifteen years after my last academic paper, I returned to research with <a href="https://arxiv.org/abs/2512.15959">BRAID</a>, a paper on bounded
+        reasoning for AI agents, written with Dr. Eyüp Çınar and published with OpenServ Labs in December 2025.
+      </p>
+    </div>
+  </article>
+</Base>

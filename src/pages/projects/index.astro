@@ -1,0 +1,34 @@
+---
+import Base from '../../layouts/Base.astro'
+import { allProjects } from '../../lib/site'
+
+const projects = await allProjects()
+---
+
+<Base title="Projects" description="Open source by Armağan Amcalar: Gea Stack, Gea, cote, liquid-glass-js, pedalboard.js, brain-bits and more.">
+  <div class="wrap">
+    <header class="page-head">
+      <h1>Projects</h1>
+      <p class="lede">
+        I published my first open source code in the late nineties on Planet Source Code, as DasherSW, and haven't stopped since. Some of it is infrastructure people run in production, some of it exists because I wanted to play guitar
+        through a browser or type with my brain. All of it is on <a href="https://github.com/dashersw">GitHub</a>.
+      </p>
+    </header>
+    <section class="section">
+      <div class="pgrid">
+        {
+          projects.map(p => (
+            <a href={`/projects/${p.id}/`}>
+              <span class="meta">
+                Since {p.data.year}
+                {p.data.stars && <span class="stars">{p.data.stars}</span>}
+              </span>
+              <h3>{p.data.title}</h3>
+              <p>{p.data.tagline}</p>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+  </div>
+</Base>

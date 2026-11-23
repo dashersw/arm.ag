@@ -1,0 +1,184 @@
+---
+import { Image } from 'astro:assets'
+import Base from '../layouts/Base.astro'
+import photo from '../assets/medium/1-jtqNKvIXjH7oHbZbQM1kFg.png'
+import { allTalks } from '../lib/site'
+
+const talks = await allTalks()
+const stage = talks.filter(t => t.data.kind === 'talk').length
+---
+
+<Base title="About" description="Biography of Armağan Amcalar: software architect, founder of Coyotiv, CTO of OpenServ, author of Gea Stack and cote, speaker and teacher.">
+  <article>
+    <header class="post-head narrow">
+      <span class="meta">Biography</span>
+      <h1>About</h1>
+      <p class="sub">Software architect, founder, teacher. Electronics engineer by training, musician by stubbornness.</p>
+    </header>
+    <div class="post-cover">
+      <Image src={photo} alt="Armağan Amcalar" width={1920} loading="eager" />
+    </div>
+    <div class="prose narrow">
+      <p>
+        I'm a software architect and entrepreneur based in Berlin. I founded <a href="/coyotiv/">Coyotiv</a>, a software company and engineering school, where I
+        work as a fractional CTO for startups and enterprises and teach the next generation of engineers. I'm also the CTO of{' '}
+        <a href="https://openserv.ai">OpenServ</a>, where we build infrastructure for AI agents, the CTO of <a href="https://neol.co">Neol</a>, and the founder
+        of Dream Kid.
+      </p>
+      <p>
+        My work has covered most of the stack, from designing integrated circuits and EEG amplifiers to multi-cloud architecture. Some of the products I led
+        are used by millions of people. Most of what I've learned on the way I've tried to give back, as open source, as talks, or in a classroom.
+      </p>
+      <p>
+        These days I spend most of my engineering time on <a href="/projects/geastack/">Gea Stack</a>, a compiler and framework that turns one TypeScript
+        codebase into native applications for everything from a microcontroller to a game console.
+      </p>
+
+      <h2>Engineer</h2>
+      <p>
+        I studied Microelectronics Engineering at Sabancı University in Istanbul, and stayed for an MSc in Electronics Engineering on brain research. My
+        undergraduate project was an EEG amplifier with dry active electrodes of my own design, which I used to map brain waves to MIDI and make music with
+        them. For my thesis I built a P300 speller, a brain-computer interface that lets people type with their brain signals, which at the time was the
+        fastest reported in academic literature. <a href="/academics/">The research is written up here.</a>
+      </p>
+      <p>
+        Years later I rebuilt that system in JavaScript as <a href="/projects/brain-bits/">brain-bits</a> and took it on stage, typing “HELLO” with my brain in
+        front of conference audiences across Europe.
+      </p>
+
+      <h2>Software architect</h2>
+      <p>
+        I've written software professionally since 2002. After leading front-end and then all of software architecture at Tart New Media in Istanbul, I
+        co-founded Startup Kitchen, a venture builder, in 2012. As chief software architect I acted as interim CTO for the startups we incubated and led their
+        teams.
+      </p>
+      <p>
+        In 2015 I moved to Berlin to become Head of Software Engineering at unu, the electric scooter company, and built its engineering organisation for
+        cloud, mobile, web and connected vehicles from scratch. In 2019 I joined Wayfair as a Senior Engineering Manager, leading the R&amp;D teams for supplier
+        onboarding and the frontend engineering community in Berlin.
+      </p>
+      <p>
+        I left to found Coyotiv in April 2020. The idea was to change how software is built by changing how engineers are trained, so it began as a school and grew
+        into a software company and a product studio. <a href="/coyotiv/">More about Coyotiv.</a>
+      </p>
+
+      <h2>Open source</h2>
+      <p>
+        I published my first open source code as a teenager on Planet Source Code, the GitHub before GitHub, under the handle I still use: <a href="/projects/moving-caption/">DasherSW</a>. <a href="/projects/cote/">cote</a>, a library for zero-configuration microservices in Node.js, came out of the
+        distributed systems we ran at Startup Kitchen and is still used in production around the world. <a href="/projects/gea/">Gea</a> is a compiler-first UI
+        framework, and <a href="/projects/geastack/">Gea Stack</a> extends it to native devices. In between there are guitar effects in the browser, a rule
+        engine, a glass shader and a few things I built only because I wanted to see whether they were possible. <a href="/projects/">All projects.</a>
+      </p>
+
+      <h2>Teacher and speaker</h2>
+      <p>
+        I love to teach. I was a teaching assistant for five courses at Sabancı, then ran the Tart Summer Camps from 2011 to 2013, which trained more than
+        sixty new graduates into working engineers. In 2014 I founded Lonca, a voluntary, non-profit school in the spirit of the old craft guilds, which trains
+        women engineers through apprenticeship. I have taught a master's course on front-end development at Sabancı, a three-volume JavaScript crash course
+        with Women Techmakers Berlin, and now the full-time program at the Coyotiv School of Software Engineering.
+      </p>
+      <p>
+        I've given {stage} talks at conferences and meetups since 2013, including JSConf Iceland, JSNation, Codemotion, iJS, JAX London, code.talks,
+        DevDays Europe and TEDx, on distributed systems, software architecture, the psychology of working in technology and AI reasoning. I also run
+        workshops that help first-time speakers get on stage. <a href="/talks/">Every talk, with slides and video.</a>
+      </p>
+
+      <h2>Musician</h2>
+      <p>
+        I live for music and the stage. I play the guitar and sing, for many years with my band Neşeli Günler Kumpanyası, in Turkey and in Germany. I also
+        hosted a radio show on Metropol FM, a national station in Germany, for a year and a half. My interest in electronics never left the pedalboard: I model
+        and build overdrive pedals, and more than one of my software projects exists because of a guitar.
+      </p>
+
+      <h2>Timeline</h2>
+      <dl class="facts">
+        <dt>2024–now</dt>
+        <dd><strong>Chief Technology Officer, OpenServ</strong><span>Platform and research for autonomous AI agents and reliable reasoning. London, hybrid.</span></dd>
+        <dt>2022–now</dt>
+        <dd>
+          <strong>Chief Technology Officer, Neol</strong>
+          <span>Built the engineering team, culture and technical roadmap from scratch for a platform that connects independent creative talent with organisations. Also a Creative Leader on the platform from 2023 to 2025.</span>
+        </dd>
+        <dt>2023–now</dt>
+        <dd>
+          <strong>Founder, Dream Kid AI</strong>
+          <span>An AI storyteller that writes, narrates and illustrates children's books for kids in hospital.</span>
+        </dd>
+        <dt>2023–now</dt>
+        <dd><strong>Founder and CEO, MVP Strasse</strong><span>A digital venture builder in Berlin with a 90-day process for building MVPs.</span></dd>
+        <dt>Apr 2020–now</dt>
+        <dd>
+          <strong>Founder and Managing Director, Coyotiv</strong>
+          <span>Software company, product studio and school of software engineering in Berlin.</span>
+        </dd>
+        <dt>2019–2023</dt>
+        <dd><strong>Founder, Nimble Career Network</strong><span>Mentorship and career support for people and companies in tech.</span></dd>
+        <dt>2019–2020</dt>
+        <dd>
+          <strong>Senior Engineering Manager, Wayfair</strong>
+          <span>Led the R&amp;D teams for supplier onboarding, cutting onboarding time tenfold, and hired for all frontend roles in Berlin.</span>
+        </dd>
+        <dt>2015–2019</dt>
+        <dd>
+          <strong>Head of Software Engineering, unu</strong>
+          <span>Built a team of 15 engineers from zero with no attrition, and delivered a €700,000 mobility project funded by the German Ministry of Transport.</span>
+        </dd>
+        <dt>2017</dt>
+        <dd><strong>Lecturer, Sabancı University</strong><span>IT537, a 42-hour master's course on front-end web development.</span></dd>
+        <dt>2017–now</dt>
+        <dd>
+          <strong>Lecturer, Women Techmakers Berlin</strong>
+          <span>The JavaScript Crash Course: JavaScript and Node.js for 70 participants a week over 13 weeks.</span>
+        </dd>
+        <dt>2014–now</dt>
+        <dd><strong>Founder and mentor, Lonca</strong><span>Non-profit software craftsmanship school for women engineers.</span></dd>
+        <dt>2012–2015</dt>
+        <dd><strong>Co-founder and chief software architect, Startup Kitchen</strong><span>Venture builder in Istanbul; interim CTO of its startups.</span></dd>
+        <dt>2010–2012</dt>
+        <dd><strong>Team leader, then chief software architect, Tart New Media</strong><span>Platforms for İşte Oyun, TTNET Playstore and Tuttur.com.</span></dd>
+        <dt>2007–2010</dt>
+        <dd><strong>MSc Electronics Engineering, Sabancı University</strong><span>Thesis on a real-time P300-based brain-computer interface.</span></dd>
+        <dt>2003–2007</dt>
+        <dd><strong>BSc Microelectronics Engineering, Sabancı University</strong><span>On scholarship.</span></dd>
+        <dt>1999</dt>
+        <dd>
+          <strong>First open source release</strong>
+          <span>Visual Basic code on Planet Source Code, the GitHub before GitHub, as DasherSW.</span>
+        </dd>
+      </dl>
+
+      <h2>Awards and publications</h2>
+      <ul>
+        <li>
+          <a href="https://arxiv.org/abs/2512.15959">BRAID</a>, a paper on bounded reasoning for AI agents, with Dr. Eyüp Çınar and OpenServ Labs, 2025
+        </li>
+        <li>
+          Berlin Hack &amp; Tell, Best Hack of the Month three times in a row, 2017.
+          <a href="/articles/winning-the-hack-of-the-month-three-times-in-a-row/">The story.</a>
+        </li>
+        <li>Ford AppLink Challenge Hackathon, first place, Dublin, October 2015. €60,000 in awards: €50,000 in cash and €10,000 in services.</li>
+        <li>Akbank Young Entrepreneur Development Program, first place, August 2010, with €10,000 worth of services</li>
+        <li>
+          “Design, Implementation and Evaluation of a Real-time P300-based Brain-Computer Interface System”, IEEE International Conference on Pattern
+          Recognition, 2010, with Müjdat Çetin
+        </li>
+        <li>“A brain-computer interface system for online spelling”, IEEE SIU, 2010, with Müjdat Çetin</li>
+      </ul>
+
+      <h2>Short bio for event programs</h2>
+      <p>
+        Armağan Amcalar is the founder of Coyotiv, a Berlin software company and engineering school, and the CTO of OpenServ and Neol. A software architect with a
+        background in electronics and brain research, he is the author of Gea Stack, a TypeScript-to-native compiler and UI framework, and of cote, a Node.js
+        library for zero-configuration microservices. He previously led engineering at unu and Wayfair. He is a regular conference speaker, a lecturer, and the
+        founder of Lonca, a software craftsmanship school for women engineers.
+      </p>
+
+      <h2>Get in touch</h2>
+      <p>
+        Use the <a href="/contact/">contact form</a>, write to <a href="mailto:hello@arm.ag">hello@arm.ag</a>, or find me on <a href="https://github.com/dashersw">GitHub</a>,{' '}
+        <a href="https://x.com/dashersw">X</a> and <a href="https://www.linkedin.com/in/armaganamcalar">LinkedIn</a>. For mentoring, see{' '}
+        <a href="/mentoring/">how it works</a>.
+      </p>
+    </div>
+  </article>
+</Base>
