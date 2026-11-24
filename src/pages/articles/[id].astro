@@ -19,7 +19,7 @@ const a = article.data
 const { Content } = await render(article)
 ---
 
-<Base title={a.title} description={a.description} lang={a.lang} type="article" published={a.date}>
+<Base title={a.title} description={a.description} lang={a.lang} type="article" published={a.date} original={a.original?.url}>
   <article>
     <header class="post-head narrow">
       <span class="meta"><a href="/articles/">Article</a> · <time datetime={isoDate(a.date)}>{fmtDate(a.date)}</time></span>
@@ -35,6 +35,13 @@ const { Content } = await render(article)
     }
     <div class="prose narrow">
       <Content />
+      {
+        a.original && (
+          <p class="original">
+            Originally published on <a href={a.original.url}>{a.original.site}</a>.
+          </p>
+        )
+      }
     </div>
     <footer class="post-foot narrow">
       <nav class="pager" aria-label="More articles">

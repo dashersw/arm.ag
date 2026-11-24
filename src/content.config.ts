@@ -31,6 +31,8 @@ const articles = defineCollection({
       lang: z.enum(['en', 'tr']).default('en'),
       cover: image().optional(),
       tags: z.array(z.string()).default([]),
+      // Set when the article first appeared somewhere else: the page says so and points its canonical link there.
+      original: z.object({ site: z.string(), url: z.string().url() }).optional(),
     }),
 })
 

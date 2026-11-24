@@ -14,6 +14,8 @@ interface Props {
   lang?: string
   type?: 'website' | 'article' | 'profile'
   published?: Date
+  /** Where the page was first published, when that is not this site. Search engines are pointed there. */
+  original?: string
 }
 const {
   title,
@@ -21,6 +23,7 @@ const {
   lang = 'en',
   type = 'website',
   published,
+  original,
 } = Astro.props
 // Every page has a generated 1200x630 share image at /og/<path>.png (see src/pages/og).
 const slug = Astro.url.pathname.replace(/^\/|\/$/g, '')
@@ -59,7 +62,7 @@ const cf = import.meta.env.PUBLIC_CF_BEACON ?? '85cb4b07b2d74fd6988a64962d0f407a
     <meta name="description" content={description} />
     {[f1, f2, f3, f4, f5].map(f => <link rel="preload" as="font" type="font/woff2" href={f} crossorigin />)}
     <ClientRouter />
-    <link rel="canonical" href={canonical} />
+    <link rel="canonical" href={original ?? canonical} />
     <link rel="alternate" type="application/rss+xml" title="Armağan Amcalar" href="/feed.xml" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <meta property="og:title" content={fullTitle} />
@@ -93,7 +96,7 @@ const cf = import.meta.env.PUBLIC_CF_BEACON ?? '85cb4b07b2d74fd6988a64962d0f407a
       set:html={JSON.stringify({
         '@context': 'https://schema.org',
         ...(type === 'article'
-          ? { '@type': 'Article', headline: title, description, url: canonical.href, image: og, inLanguage: lang, datePublished: published?.toISOString(), author: me }
+          ? { '@type': 'Article', headline: title, description, url: canonical.href, image: og, inLanguage: lang, datePublished: published?.toISOString(), author: me, ...(original && { isBasedOn: original, sameAs: original }) }
           : slug === '' || slug === 'about'
             ? { ...me, '@type': 'Person', description, image: og }
             : { '@type': 'WebPage', name: fullTitle, description, url: canonical.href, inLanguage: lang, author: me }),
